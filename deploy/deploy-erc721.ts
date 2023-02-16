@@ -1,4 +1,4 @@
-import { Wallet } from "zksync-web3";
+import { Wallet, utils  } from "zksync-web3";
 import * as ethers from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
@@ -33,13 +33,13 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   console.log(`The deployment is estimated to cost ${parsedFee} ETH`);
 
   // ⚠️ OPTIONAL: Deposit funds to L2
-  // const depositHandle = await deployer.zkWallet.deposit({
-  //   to: deployer.zkWallet.address,
-  //   token: utils.ETH_ADDRESS,
-  //   amount: deploymentFee.mul(2),
-  // });
-  // // Wait until the deposit is processed on zkSync
-  // await depositHandle.wait();
+   const depositHandle = await deployer.zkWallet.deposit({
+     to: deployer.zkWallet.address,
+     token: utils.ETH_ADDRESS,
+     amount: deploymentFee.mul(2),
+   });
+   // Wait until the deposit is processed on zkSync
+   await depositHandle.wait();
 
   // Deploy this contract. The returned object will be of a `Contract` type, similarly to ones in `ethers`.
   const contract = await deployer.deploy(artifact);
